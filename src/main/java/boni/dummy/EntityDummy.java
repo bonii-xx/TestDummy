@@ -1,23 +1,20 @@
 package boni.dummy;
 
-import boni.dummy.network.DamageMessage;
-import boni.dummy.network.SyncEquipmentMessage;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S04PacketEntityEquipment;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+
+import boni.dummy.network.DamageMessage;
+import boni.dummy.network.SyncEquipmentMessage;
+import io.netty.buffer.ByteBuf;
 
 public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnData {
     private float customRotation;
@@ -143,7 +140,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
         }
 
         // calculate the ACTUAL damage done after armor n stuff
-        if (!this.isEntityInvulnerable())
+        if (!this.isEntityInvulnerable(source))
         {
             damage = ForgeHooks.onLivingHurt(this, source, damage);
             if (damage > 0) {

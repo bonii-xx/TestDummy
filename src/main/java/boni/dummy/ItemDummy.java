@@ -3,19 +3,24 @@ package boni.dummy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class ItemDummy extends Item {
     public ItemDummy() {
         this.setUnlocalizedName("dummy");
-        this.setTextureName("testdummy:dummy");
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float fx, float fy, float fz) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+
         if(!world.isRemote) {
-            switch (side)
+            switch (side.getIndex())
             {
                 case 0: y--; y--; break;
                 case 1: y++; break;
@@ -29,7 +34,7 @@ public class ItemDummy extends Item {
 
             EntityDummy entity = new EntityDummy(world);
             entity.setPosition(x + 0.5, y, z + 0.5);
-            entity.setPlacementRotation(foo, side);
+            entity.setPlacementRotation(foo, side.getIndex());
             world.spawnEntityInWorld(entity);
 
             stack.stackSize--;

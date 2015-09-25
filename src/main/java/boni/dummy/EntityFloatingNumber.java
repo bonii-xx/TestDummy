@@ -1,10 +1,11 @@
 package boni.dummy;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+
+import io.netty.buffer.ByteBuf;
 
 public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpawnData {
     private int age;

@@ -1,13 +1,18 @@
 package boni.dummy;
 
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
+
 import boni.dummy.network.DamageMessage;
 import boni.dummy.network.SyncEquipmentMessage;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy {
     public SimpleNetworkWrapper network;
+
+    public void preinit() {
+
+    }
 
     public void init() {
         network = NetworkRegistry.INSTANCE.newSimpleChannel("TestDummy");
