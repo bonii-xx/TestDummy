@@ -206,6 +206,10 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
         if (this.hurtTime > 0)
             --this.hurtTime;
         //onEntityUpdate();
+
+        // handle fire
+        if (this.worldObj.isRemote)
+            this.extinguish();
     }
 
     @Override
