@@ -139,6 +139,22 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
             }
         }
 
+
+        if ((float)this.hurtResistantTime > (float)this.maxHurtResistantTime / 2.0F)
+        {
+            if (damage <= this.lastDamage)
+            {
+                return false;
+            }
+
+            this.lastDamage = damage;
+        }
+        else
+        {
+            this.lastDamage = damage;
+            this.hurtResistantTime = this.maxHurtResistantTime;
+        }
+
         // calculate the ACTUAL damage done after armor n stuff
         if (!this.isEntityInvulnerable(source))
         {
@@ -167,7 +183,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
         }
 
         // visual effect
-        this.hurtTime = this.maxHurtTime = 5;
+        this.hurtTime = this.maxHurtTime = 10;
 
         if(!this.worldObj.isRemote) {
             if(myLittleNumber != null && !myLittleNumber.isDead)
@@ -202,6 +218,8 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
         if (this.hurtTime > 0)
             --this.hurtTime;
+        if (this.hurtResistantTime > 0)
+            --this.hurtResistantTime;
         //onEntityUpdate();
 
         // handle fire
