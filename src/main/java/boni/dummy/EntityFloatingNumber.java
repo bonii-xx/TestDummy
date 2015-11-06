@@ -7,9 +7,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpawnData {
-    private int age;
+    protected int age;
     public float damage;
-    private int speed;
+    protected int speed;
 
     public EntityFloatingNumber(World world) {
         super(world);

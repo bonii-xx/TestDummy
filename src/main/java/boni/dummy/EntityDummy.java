@@ -26,6 +26,8 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
     // used to calculate the whole damage in one tick, in case there are multiple sources
     public float lastDamage;
     public int lastDamageTick;
+    public int firstDamageTick; // indicates when we started taking damage and if != 0 it also means that we are currently recording damage taken
+    public float damageTaken;
 
     public EntityFloatingNumber myLittleNumber;
 
@@ -198,6 +200,10 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
             worldObj.spawnEntityInWorld(number);
 
             TestDummyMod.proxy.network.sendToAllAround(new DamageMessage(lastDamage, shake, this, myLittleNumber), new NetworkRegistry.TargetPoint(dimension, posX, posY, posZ, 20));
+
+            this.damageTaken += damage;
+            if(firstDamageTick == 0)
+                firstDamageTick = this.ticksExisted;
         }
 
         return true;
@@ -223,11 +229,22 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
             --this.hurtTime;
         if (this.hurtResistantTime > 0)
             --this.hurtResistantTime;
-        //onEntityUpdate();
 
         // handle fire
         if (this.worldObj.isRemote)
             this.extinguish();
+
+        // DPS!
+        if(!this.worldObj.isRemote && this.damageTaken > 0 && this.ticksExisted - lastDamageTick > 30) {
+            // it's not actual DPS but "damage per tick scaled to seconds".. but meh.
+            float seconds = (lastDamageTick - firstDamageTick)/20f;
+            float dps = damageTaken/seconds;
+            EntityFloatingNumber number = new EntityDpsFloatingNumber(worldObj, dps, this.posX, this.posY+3, this.posZ);
+            worldObj.spawnEntityInWorld(number);
+
+            this.damageTaken = 0;
+            this.firstDamageTick = 0;
+        }
     }
 
     @Override
