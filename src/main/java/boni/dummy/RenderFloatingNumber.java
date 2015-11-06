@@ -27,6 +27,8 @@ public class RenderFloatingNumber extends Render {
 
     public void doRender(EntityFloatingNumber entity, double x, double y, double z)
     {
+        boolean dps = entity instanceof EntityDpsFloatingNumber;
+
         GL11.glPushMatrix();
         GL11.glTranslated(x,y,z);
 
@@ -38,6 +40,8 @@ public class RenderFloatingNumber extends Render {
 
         double l = Math.sqrt(xd*xd + yd*yd + zd*zd);
         double scale = 0.01*l;
+
+        if(dps) scale += 0.04f;
 
         GL11.glScaled(-scale, -scale, scale);
         // also move it up a bit depending on distance
@@ -53,6 +57,7 @@ public class RenderFloatingNumber extends Render {
 
         // draw it
         String s = df.format(entity.damage/2f);
+        if(dps) s = "DPS: " + s;
         GL11.glTranslated(-fontRenderer.getStringWidth(s)/2,0,0);
         fontRenderer.drawString(s, 0, 0, 0xffffffff, true);
         GL11.glTranslated(fontRenderer.getStringWidth(s)/2,0,0);
