@@ -236,11 +236,13 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
         // DPS!
         if(!this.worldObj.isRemote && this.damageTaken > 0 && this.ticksExisted - lastDamageTick > 30) {
-            // it's not actual DPS but "damage per tick scaled to seconds".. but meh.
-            float seconds = (lastDamageTick - firstDamageTick)/20f;
-            float dps = damageTaken/seconds;
-            EntityFloatingNumber number = new EntityDpsFloatingNumber(worldObj, dps, this.posX, this.posY+3, this.posZ);
-            worldObj.spawnEntityInWorld(number);
+            if(firstDamageTick < lastDamageTick) {
+                // it's not actual DPS but "damage per tick scaled to seconds".. but meh.
+                float seconds = (lastDamageTick - firstDamageTick) / 20f + 1;
+                float dps = damageTaken / seconds;
+                EntityFloatingNumber number = new EntityDpsFloatingNumber(worldObj, dps, this.posX, this.posY + 3, this.posZ);
+                worldObj.spawnEntityInWorld(number);
+            }
 
             this.damageTaken = 0;
             this.firstDamageTick = 0;
