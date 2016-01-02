@@ -1,5 +1,6 @@
 package boni.dummy;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,7 @@ import net.minecraft.world.World;
 public class ItemDummy extends Item {
     public ItemDummy() {
         this.setUnlocalizedName("dummy");
+        this.setCreativeTab(CreativeTabs.tabCombat);
     }
 
     @Override

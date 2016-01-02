@@ -14,7 +14,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 
-@Mod(modid = TestDummyMod.MODID, version = TestDummyMod.VERSION, name = "MmmMmmMmmMmm", dependencies = "required-after:Forge@[11.14,)", acceptedMinecraftVersions="[1.8,1.8.8]")
+@Mod(modid = TestDummyMod.MODID, version = TestDummyMod.VERSION, name = "MmmMmmMmmMmm", dependencies = "required-after:Forge@[11.14,)", acceptedMinecraftVersions="[1.8,1.8.99]")
 public class TestDummyMod
 {
     public static final String MODID = "testdummy";
