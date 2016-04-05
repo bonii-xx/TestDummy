@@ -1,4 +1,4 @@
-package boni.dummy;
+package boni.dummy.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,21 +12,20 @@ import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
 
-public class RenderFloatingNumber extends Render {
+import boni.dummy.EntityDpsFloatingNumber;
+import boni.dummy.EntityFloatingNumber;
+
+public class RenderFloatingNumber extends Render<EntityFloatingNumber> {
 
   private static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
   private static DecimalFormat df = new DecimalFormat("#.##");
 
-  protected RenderFloatingNumber(RenderManager renderManager) {
+  public RenderFloatingNumber(RenderManager renderManager) {
     super(renderManager);
   }
 
   @Override
-  public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
-    doRender((EntityFloatingNumber) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_);
-  }
-
-  public void doRender(EntityFloatingNumber entity, double x, double y, double z) {
+  public void doRender(EntityFloatingNumber entity, double x, double y, double z, float entityYaw, float partialTicks) {
     boolean dps = entity instanceof EntityDpsFloatingNumber;
 
     GL11.glPushMatrix();
@@ -72,7 +71,7 @@ public class RenderFloatingNumber extends Render {
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
+  protected ResourceLocation getEntityTexture(EntityFloatingNumber p_110775_1_) {
     return null;
   }
 }

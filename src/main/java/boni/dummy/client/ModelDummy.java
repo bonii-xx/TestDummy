@@ -1,4 +1,4 @@
-package boni.dummy;
+package boni.dummy.client;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -7,9 +7,15 @@ import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import boni.dummy.EntityDummy;
+
 public class ModelDummy extends ModelBiped {
 
   public ModelRenderer standPlate;
+
+  public ModelDummy(float modelSize) {
+    this(modelSize, 0);
+  }
 
   public ModelDummy(float size, float p_i1149_2_) {
     this(size, p_i1149_2_, 64, 64);
