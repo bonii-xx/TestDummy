@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -50,12 +51,17 @@ public class SyncEquipmentMessage implements IMessage {
   public static class MessageHandlerClient implements IMessageHandler<SyncEquipmentMessage, IMessage> {
 
     @Override
-    public SyncEquipmentMessage onMessage(SyncEquipmentMessage message, MessageContext ctx) {
-      Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.entityID);
-      if(entity != null && entity instanceof EntityDummy) {
-        EntityEquipmentSlot slot = EntityEquipmentSlot.values()[message.slotId];
-        entity.setItemStackToSlot(slot, message.itemstack);
-      }
+    public SyncEquipmentMessage onMessage(final SyncEquipmentMessage message, MessageContext ctx) {
+      FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(new Runnable() {
+        @Override
+        public void run() {
+          Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.entityID);
+          if(entity != null && entity instanceof EntityDummy) {
+            EntityEquipmentSlot slot = EntityEquipmentSlot.values()[message.slotId];
+            entity.setItemStackToSlot(slot, message.itemstack);
+          }
+        }
+      });
       return null;
     }
   }

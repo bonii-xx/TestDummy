@@ -2,6 +2,7 @@ package boni.dummy.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -46,19 +47,24 @@ public class DamageMessage implements IMessage {
   public static class MessageHandlerClient implements IMessageHandler<DamageMessage, IMessage> {
 
     @Override
-    public DamageMessage onMessage(DamageMessage message, MessageContext ctx) {
-      Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.entityID);
-      if(entity != null && entity instanceof EntityDummy) {
-        EntityDummy dummy = (EntityDummy) entity;
-        dummy.shake = message.shakeAmount;
-        dummy.setCustomNameTag(String.valueOf(message.damage / 2f));
-      }
-      if(message.nrID > 0) {
-        entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.nrID);
-        if(entity != null && entity instanceof EntityFloatingNumber) {
-          ((EntityFloatingNumber) entity).reSet(message.damage);
+    public DamageMessage onMessage(final DamageMessage message, MessageContext ctx) {
+      FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(new Runnable() {
+        @Override
+        public void run() {
+          Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.entityID);
+          if(entity != null && entity instanceof EntityDummy) {
+            EntityDummy dummy = (EntityDummy) entity;
+            dummy.shake = message.shakeAmount;
+            dummy.setCustomNameTag(String.valueOf(message.damage / 2f));
+          }
+          if(message.nrID > 0) {
+            entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.nrID);
+            if(entity != null && entity instanceof EntityFloatingNumber) {
+              ((EntityFloatingNumber) entity).reSet(message.damage);
+            }
+          }
         }
-      }
+      });
       return null;
     }
   }
