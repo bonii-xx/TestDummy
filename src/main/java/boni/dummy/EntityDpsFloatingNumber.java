@@ -20,14 +20,17 @@ public class EntityDpsFloatingNumber extends EntityFloatingNumber {
 
   @Override
   public void onEntityUpdate() {
-    if(this.age++ > 150)
+    if(this.age++ > 150) {
       this.setDead();
+    }
 
-    this.posY += speed/500d;
+    this.posY += speed / 500d;
 
-    if(speed > 1)
+    if(speed > 1) {
       speed /= 2;
-    else if(speed == 1)
+    }
+    else if(speed == 1) {
       speed = 0;
+    }
   }
 }
