@@ -1,9 +1,15 @@
 package boni.dummy;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EntitySelectors;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -17,6 +23,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
 
 
 @Mod(modid = TestDummyMod.MODID, version = TestDummyMod.VERSION, name = "MmmMmmMmmMmm", dependencies = "required-after:Forge@[12.15,)", acceptedMinecraftVersions = "[1.9,1.9.999]")
@@ -36,6 +44,20 @@ public class TestDummyMod {
 
   public TestDummyMod() {
     log.info("Please don't hurt me. :S");
+
+    // fix the static ARROW_TARGETS so it can hit our dummy
+    EntityArrow.ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING,
+                                               new Predicate<Entity>() {
+                                                 public boolean apply(Entity input) {
+                                                   return input.canBeCollidedWith();
+                                                 }
+                                               },
+                                               new Predicate<Entity>() {
+                                                 @Override
+                                                 public boolean apply(@Nullable Entity input) {
+                                                   return input.isEntityAlive() || input instanceof EntityDummy;
+                                                 }
+                                               });
   }
 
   @Mod.EventHandler

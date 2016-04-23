@@ -78,8 +78,18 @@ processResources
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'deobf'
+    manifest {
+        attributes 'FMLAT': 'TConstruct_at.cfg'
+    }
 }
 
 artifacts {
     archives deobfJar
+}
+
+// Add Access Transformers Manifest
+jar {
+    manifest {
+        attributes 'FMLAT': 'testdummy_at.cfg'
+    }
 }
