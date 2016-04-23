@@ -15,12 +15,16 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 @Mod(modid = TestDummyMod.MODID, version = TestDummyMod.VERSION, name = "MmmMmmMmmMmm", dependencies = "required-after:Forge@[12.15,)", acceptedMinecraftVersions = "[1.9,1.9.999]")
 public class TestDummyMod {
 
   public static final String MODID = "testdummy";
   public static final String VERSION = "1.10";
+  public static final Logger log = LogManager.getLogger(MODID);
 
   @Mod.Instance
   public static TestDummyMod instance;
@@ -29,6 +33,10 @@ public class TestDummyMod {
   public static CommonProxy proxy;
 
   public static Item itemDummy = new ItemDummy();
+
+  public TestDummyMod() {
+    log.info("Please don't hurt me. :S");
+  }
 
   @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -47,9 +55,9 @@ public class TestDummyMod {
                                                " B ",
                                                "HWH",
                                                " P ",
-                                               'B', Item.getItemFromBlock(Blocks.hay_block),
-                                               'H', Items.wheat,
-                                               'W', new ItemStack(Blocks.wool, 0, OreDictionary.WILDCARD_VALUE),
+                                               'B', Item.getItemFromBlock(Blocks.HAY_BLOCK),
+                                               'H', Items.WHEAT,
+                                               'W', new ItemStack(Blocks.WOOL, 0, OreDictionary.WILDCARD_VALUE),
                                                'P', "plankWood"));
 
     proxy.init();

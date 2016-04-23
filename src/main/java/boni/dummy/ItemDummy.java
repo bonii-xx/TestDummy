@@ -16,7 +16,7 @@ public class ItemDummy extends Item {
   public ItemDummy() {
     this.setUnlocalizedName("dummy");
     this.setRegistryName("dummy");
-    this.setCreativeTab(CreativeTabs.tabCombat);
+    this.setCreativeTab(CreativeTabs.COMBAT);
   }
 
   @Override
