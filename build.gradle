@@ -14,7 +14,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.10"
+version = "1.11"
 group= "boni" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "MmmMmmMmmMmm"
 
@@ -79,7 +79,7 @@ task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'deobf'
     manifest {
-        attributes 'FMLAT': 'TConstruct_at.cfg'
+        attributes 'FMLAT': 'testdummy_deobf_at.cfg'
     }
 }
 
@@ -93,3 +93,5 @@ jar {
         attributes 'FMLAT': 'testdummy_at.cfg'
     }
 }
+
+build.dependsOn sourceJar, deobfJar
