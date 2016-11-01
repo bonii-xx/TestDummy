@@ -64,9 +64,9 @@ public class TestDummyMod {
   public void preInit(FMLPreInitializationEvent event) {
     GameRegistry.register(itemDummy);
 
-    EntityRegistry.registerModEntity(EntityDummy.class, "Dummy", 0, TestDummyMod.instance, 32, 10, false);
-    EntityRegistry.registerModEntity(EntityFloatingNumber.class, "FloatingNumber", 1, TestDummyMod.instance, 32, 1, false);
-    EntityRegistry.registerModEntity(EntityDpsFloatingNumber.class, "FloatingNumberDPS", 2, TestDummyMod.instance, 32, 1, false);
+    EntityRegistry.registerModEntity(EntityDummy.class, "Dummy", 0, TestDummyMod.instance, 128, 10, false);
+    EntityRegistry.registerModEntity(EntityFloatingNumber.class, "FloatingNumber", 1, TestDummyMod.instance, 128, 1, false);
+    EntityRegistry.registerModEntity(EntityDpsFloatingNumber.class, "FloatingNumberDPS", 2, TestDummyMod.instance, 128, 1, false);
 
     proxy.preinit();
   }
