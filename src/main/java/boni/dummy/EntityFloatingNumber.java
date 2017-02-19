@@ -49,7 +49,7 @@ public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpa
   }
 
   @Override
-  public void moveEntity(double p_70091_1_, double p_70091_3_, double p_70091_5_) {
+  public void move(double x, double y, double z) {
 
   }
 

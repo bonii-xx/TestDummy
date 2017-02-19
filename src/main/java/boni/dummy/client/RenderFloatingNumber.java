@@ -32,7 +32,7 @@ public class RenderFloatingNumber extends Render<EntityFloatingNumber> {
     GL11.glTranslated(x, y, z);
 
     // make scale dependant on distance
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = Minecraft.getMinecraft().player;
     double xd = player.posX - entity.posX;
     double yd = player.posY - entity.posY;
     double zd = player.posZ - entity.posZ;

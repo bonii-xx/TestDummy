@@ -53,7 +53,7 @@ public class ItemDummy extends Item {
       EntityDummy entity = new EntityDummy(world);
       entity.setPosition(x + 0.5, y, z + 0.5);
       entity.setPlacementRotation(foo, side.getIndex());
-      world.spawnEntityInWorld(entity);
+      world.spawnEntity(entity);
 
       stack.stackSize--;
     }

@@ -51,14 +51,14 @@ public class DamageMessage implements IMessage {
       FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(new Runnable() {
         @Override
         public void run() {
-          Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.entityID);
+          Entity entity = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
           if(entity != null && entity instanceof EntityDummy) {
             EntityDummy dummy = (EntityDummy) entity;
             dummy.shake = message.shakeAmount;
             dummy.setCustomNameTag(String.valueOf(message.damage / 2f));
           }
           if(message.nrID > 0) {
-            entity = Minecraft.getMinecraft().theWorld.getEntityByID(message.nrID);
+            entity = Minecraft.getMinecraft().world.getEntityByID(message.nrID);
             if(entity != null && entity instanceof EntityFloatingNumber) {
               ((EntityFloatingNumber) entity).reSet(message.damage);
             }

@@ -90,7 +90,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
         if(armor == null) {
           continue;
         }
-        if(!this.worldObj.isRemote) {
+        if(!getEntityWorld().isRemote) {
           if(!player.capabilities.isCreativeMode) {
             this.entityDropItem(armor, 1.0f);
           }
@@ -112,7 +112,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
       }
       if(item.isValidArmor(stack, slot, player)) {
         ItemStack armor = getItemStackFromSlot(slot);
-        if(armor != null && !this.worldObj.isRemote) {
+        if(armor != null && !getEntityWorld().isRemote) {
           this.entityDropItem(armor, 1.0f);
         }
 
@@ -120,7 +120,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
         armor.stackSize = 1;
 
         // send update
-        if(!this.worldObj.isRemote) {
+        if(!getEntityWorld().isRemote) {
           TestDummyMod.proxy.network.sendToAllAround(new SyncEquipmentMessage(this.getEntityId(), slot.ordinal(), armor), new NetworkRegistry.TargetPoint(dimension, posX, posY, posZ, 20));
         }
 
@@ -137,7 +137,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
   }
 
   public void dismantle() {
-    if(!worldObj.isRemote) {
+    if(!getEntityWorld().isRemote) {
       dropEquipment(true, 999);
       dropItem(TestDummyMod.itemDummy, 1);
     }
@@ -199,15 +199,15 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
     // visual effect
     this.hurtTime = this.maxHurtTime = 10;
 
-    if(!this.worldObj.isRemote) {
+    if(!getEntityWorld().isRemote) {
       if(myLittleNumber != null && !myLittleNumber.isDead) {
         myLittleNumber.setDead();
       }
 
       // damage numebrssss
-      EntityFloatingNumber number = new EntityFloatingNumber(worldObj, damage, this.posX, this.posY + 2, this.posZ);
+      EntityFloatingNumber number = new EntityFloatingNumber(getEntityWorld(), damage, this.posX, this.posY + 2, this.posZ);
       myLittleNumber = number;
-      worldObj.spawnEntityInWorld(number);
+      getEntityWorld().spawnEntity(number);
 
       TestDummyMod.proxy.network.sendToAllAround(new DamageMessage(lastDamage, shake, this, myLittleNumber), new NetworkRegistry.TargetPoint(dimension, posX, posY, posZ, 20));
 
@@ -244,18 +244,18 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
     }
 
     // handle fire
-    if(this.worldObj.isRemote) {
+    if(getEntityWorld().isRemote) {
       this.extinguish();
     }
 
     // DPS!
-    if(!this.worldObj.isRemote && this.damageTaken > 0 && this.ticksExisted - lastDamageTick > 30) {
+    if(!getEntityWorld().isRemote && this.damageTaken > 0 && this.ticksExisted - lastDamageTick > 30) {
       if(firstDamageTick < lastDamageTick) {
         // it's not actual DPS but "damage per tick scaled to seconds".. but meh.
         float seconds = (lastDamageTick - firstDamageTick) / 20f + 1;
         float dps = damageTaken / seconds;
-        EntityFloatingNumber number = new EntityDpsFloatingNumber(worldObj, dps, this.posX, this.posY + 3, this.posZ);
-        worldObj.spawnEntityInWorld(number);
+        EntityFloatingNumber number = new EntityDpsFloatingNumber(getEntityWorld(), dps, this.posX, this.posY + 3, this.posZ);
+        getEntityWorld().spawnEntity(number);
       }
 
       this.damageTaken = 0;
