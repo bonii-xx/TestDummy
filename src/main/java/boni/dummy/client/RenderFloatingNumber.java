@@ -17,7 +17,7 @@ import boni.dummy.EntityFloatingNumber;
 
 public class RenderFloatingNumber extends Render<EntityFloatingNumber> {
 
-  private static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+  private static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
   private static DecimalFormat df = new DecimalFormat("#.##");
 
   public RenderFloatingNumber(RenderManager renderManager) {

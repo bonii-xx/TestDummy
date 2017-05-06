@@ -22,7 +22,7 @@ public class DummyEventHandler {
     EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
 
     // shift-leftclick with empty hand dismantles
-    if(player.isSneaking() && player.getHeldItemMainhand() == null) {
+    if(player.isSneaking() && player.getHeldItemMainhand().isEmpty()) {
       ((EntityDummy) event.getEntity()).dismantle();
     }
   }

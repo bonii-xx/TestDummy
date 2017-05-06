@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -27,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 
 
-@Mod(modid = TestDummyMod.MODID, version = TestDummyMod.VERSION, name = "MmmMmmMmmMmm", dependencies = "required-after:Forge@[12.15,)", acceptedMinecraftVersions = "[1.9,1.11)")
+@Mod(modid = TestDummyMod.MODID, version = TestDummyMod.VERSION, name = "MmmMmmMmmMmm", dependencies = "required-after:forge@[13.20,)", acceptedMinecraftVersions = "[1.11,1.12)")
 public class TestDummyMod {
 
   public static final String MODID = "testdummy";
@@ -64,9 +65,9 @@ public class TestDummyMod {
   public void preInit(FMLPreInitializationEvent event) {
     GameRegistry.register(itemDummy);
 
-    EntityRegistry.registerModEntity(EntityDummy.class, "Dummy", 0, TestDummyMod.instance, 128, 10, false);
-    EntityRegistry.registerModEntity(EntityFloatingNumber.class, "FloatingNumber", 1, TestDummyMod.instance, 128, 1, false);
-    EntityRegistry.registerModEntity(EntityDpsFloatingNumber.class, "FloatingNumberDPS", 2, TestDummyMod.instance, 128, 1, false);
+    EntityRegistry.registerModEntity(new ResourceLocation(MODID, "dummy"), EntityDummy.class, "Dummy", 0, TestDummyMod.instance, 128, 10, false);
+    EntityRegistry.registerModEntity(new ResourceLocation(MODID, "floating_number"), EntityFloatingNumber.class, "FloatingNumber", 1, TestDummyMod.instance, 128, 1, false);
+    EntityRegistry.registerModEntity(new ResourceLocation(MODID, "floating_number_dps"), EntityDpsFloatingNumber.class, "FloatingNumberDPS", 2, TestDummyMod.instance, 128, 1, false);
 
     proxy.preinit();
   }

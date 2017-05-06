@@ -1,6 +1,7 @@
 package boni.dummy;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -75,49 +76,35 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
   // dress it up! :D
 
-  @Override
-  protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-    if(stack == null) {
-      if(!player.isSneaking()) {
-        return false;
-      }
-      // taking armor off?
-      for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-        if(slot.getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
-          continue;
-        }
-        ItemStack armor = getItemStackFromSlot(slot);
-        if(armor == null) {
-          continue;
-        }
-        if(!getEntityWorld().isRemote) {
-          if(!player.capabilities.isCreativeMode) {
-            this.entityDropItem(armor, 1.0f);
-          }
-          // send update because for some reason that stuff is not synced
-          TestDummyMod.proxy.network.sendToAllAround(new SyncEquipmentMessage(this.getEntityId(), slot.ordinal(), null), new NetworkRegistry.TargetPoint(dimension, posX, posY, posZ, 20));
-        }
 
-        // also do it locally, but it'll be overwritten by the update packet above anyway
-        this.setItemStackToSlot(slot, null);
-        return true;
-      }
-      return false;
+  @Override
+  protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+    ItemStack itemStack = player.getHeldItem(hand);
+    if(itemStack.isEmpty()) {
+      return removeArmor(player);
     }
 
-    Item item = stack.getItem();
+    if(equipArmor(player, itemStack)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private boolean equipArmor(EntityPlayer player, ItemStack itemStack) {
+    Item item = itemStack.getItem();
     for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
       if(slot.getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
         continue;
       }
-      if(item.isValidArmor(stack, slot, player)) {
+      if(item.isValidArmor(itemStack, slot, player)) {
         ItemStack armor = getItemStackFromSlot(slot);
-        if(armor != null && !getEntityWorld().isRemote) {
+        if(!armor.isEmpty() && !getEntityWorld().isRemote) {
           this.entityDropItem(armor, 1.0f);
         }
 
-        armor = stack.copy();
-        armor.stackSize = 1;
+        armor = itemStack.copy();
+        armor.setCount(1);
 
         // send update
         if(!getEntityWorld().isRemote) {
@@ -126,13 +113,42 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
         // also do it locally, but it'll be overwritten by the update packet above anyway
         setItemStackToSlot(slot, armor);
+        this.getAttributeMap().applyAttributeModifiers(armor.getAttributeModifiers(slot));
 
-        stack.stackSize--;
+        itemStack.shrink(1);
 
         return true;
       }
     }
+    return false;
+  }
 
+  private boolean removeArmor(EntityPlayer player) {
+    if(!player.isSneaking()) {
+      return false;
+    }
+    // taking armor off?
+    for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+      if(slot.getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
+        continue;
+      }
+      ItemStack armor = getItemStackFromSlot(slot);
+      if(armor.isEmpty()) {
+        continue;
+      }
+      if(!getEntityWorld().isRemote) {
+        if(!player.capabilities.isCreativeMode) {
+          this.entityDropItem(armor, 1.0f);
+        }
+        // send update because for some reason that stuff is not synced
+        TestDummyMod.proxy.network.sendToAllAround(new SyncEquipmentMessage(this.getEntityId(), slot.ordinal(), ItemStack.EMPTY), new NetworkRegistry.TargetPoint(dimension, posX, posY, posZ, 20));
+      }
+
+      // also do it locally, but it'll be overwritten by the update packet above anyway
+      this.setItemStackToSlot(slot, ItemStack.EMPTY);
+      this.getAttributeMap().removeAttributeModifiers(armor.getAttributeModifiers(slot));
+      return true;
+    }
     return false;
   }
 
@@ -148,11 +164,11 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
   @Override
   public boolean attackEntityFrom(DamageSource source, float damage) {
     // dismantling
-    if(source.damageType.equals("player")) {
+    if(source.damageType.equals("player") && source.getEntity() != null) {
       EntityPlayer player = (EntityPlayer) source.getEntity();
 
       // shift-leftclick with empty hand dismantles
-      if(player.isSneaking() && player.getHeldItemMainhand() == null) {
+      if(player.isSneaking() && player.getHeldItemMainhand().isEmpty()) {
         dismantle();
         return false;
       }
@@ -172,7 +188,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
     }
 
     // calculate the ACTUAL damage done after armor n stuff
-    if(!this.isEntityInvulnerable(source)) {
+    if(!this.isEntityInvulnerable(source) && !world.isRemote) {
       damage = ForgeHooks.onLivingHurt(this, source, damage);
       if(damage > 0) {
         damage = this.applyArmorCalculations(source, damage);

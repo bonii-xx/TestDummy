@@ -20,13 +20,13 @@ public class ItemDummy extends Item {
   }
 
   @Override
-  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
     int x = pos.getX();
     int y = pos.getY();
     int z = pos.getZ();
 
-    if(!world.isRemote) {
-      switch(side.getIndex()) {
+    if(!worldIn.isRemote) {
+      switch(facing.getIndex()) {
         case 0:
           y--;
           y--;
@@ -50,12 +50,12 @@ public class ItemDummy extends Item {
 
       Vec3d foo = player.getLookVec();
 
-      EntityDummy entity = new EntityDummy(world);
+      EntityDummy entity = new EntityDummy(worldIn);
       entity.setPosition(x + 0.5, y, z + 0.5);
-      entity.setPlacementRotation(foo, side.getIndex());
-      world.spawnEntity(entity);
+      entity.setPlacementRotation(foo, facing.getIndex());
+      worldIn.spawnEntity(entity);
 
-      stack.stackSize--;
+      player.getHeldItem(hand).shrink(1);
     }
 
     return EnumActionResult.SUCCESS;

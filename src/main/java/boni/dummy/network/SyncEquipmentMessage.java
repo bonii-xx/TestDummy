@@ -10,6 +10,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import javax.annotation.Nonnull;
+
 import boni.dummy.EntityDummy;
 import io.netty.buffer.ByteBuf;
 
@@ -22,10 +24,10 @@ public class SyncEquipmentMessage implements IMessage {
   public SyncEquipmentMessage() {
   }
 
-  public SyncEquipmentMessage(int entityId, int slotId, ItemStack itemstack) {
+  public SyncEquipmentMessage(int entityId, int slotId, @Nonnull ItemStack itemstack) {
     this.entityID = entityId;
     this.slotId = slotId;
-    this.itemstack = itemstack == null ? null : itemstack.copy();
+    this.itemstack = itemstack.copy();
   }
 
   @Override

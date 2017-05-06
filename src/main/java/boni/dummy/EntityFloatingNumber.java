@@ -1,6 +1,7 @@
 package boni.dummy;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -49,7 +50,7 @@ public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpa
   }
 
   @Override
-  public void move(double x, double y, double z) {
+  public void move(MoverType type, double x, double y, double z) {
 
   }
 
