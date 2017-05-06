@@ -174,7 +174,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
     }
 
     // calculate the ACTUAL damage done after armor n stuff
-    if(!this.isEntityInvulnerable(source)) {
+    if(!this.isEntityInvulnerable(source) && !world.isRemote) {
       damage = ForgeHooks.onLivingHurt(this, source, damage);
       if(damage > 0) {
         damage = this.applyArmorCalculations(source, damage);
