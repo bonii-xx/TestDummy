@@ -100,6 +100,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
         // also do it locally, but it'll be overwritten by the update packet above anyway
         this.setItemStackToSlot(slot, null);
+        this.getAttributeMap().removeAttributeModifiers(armor.getAttributeModifiers(slot));
         return true;
       }
       return false;
@@ -126,6 +127,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
         // also do it locally, but it'll be overwritten by the update packet above anyway
         setItemStackToSlot(slot, armor);
+        this.getAttributeMap().applyAttributeModifiers(armor.getAttributeModifiers(slot));
 
         stack.stackSize--;
 
