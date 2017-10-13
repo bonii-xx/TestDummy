@@ -1,7 +1,6 @@
 package boni.dummy;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -44,7 +43,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
     int r = 0;
     // up/down == depend on look vector
     if(side == 0 || side == 1) {
-      r = (int) (Math.atan2(lookVector.zCoord, lookVector.xCoord) * 360 / (2 * Math.PI));
+      r = (int) (Math.atan2(lookVector.z, lookVector.x) * 360 / (2 * Math.PI));
       r += 90;
     }
     else if(side == 2) {
@@ -164,8 +163,8 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
   @Override
   public boolean attackEntityFrom(DamageSource source, float damage) {
     // dismantling
-    if(source.damageType.equals("player") && source.getEntity() != null) {
-      EntityPlayer player = (EntityPlayer) source.getEntity();
+    if(source.damageType.equals("player") && source.getTrueSource() != null) {
+      EntityPlayer player = (EntityPlayer) source.getTrueSource();
 
       // shift-leftclick with empty hand dismantles
       if(player.isSneaking() && player.getHeldItemMainhand().isEmpty()) {

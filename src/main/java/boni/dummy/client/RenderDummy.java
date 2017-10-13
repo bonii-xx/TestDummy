@@ -1,10 +1,7 @@
 package boni.dummy.client;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 
 import boni.dummy.EntityDummy;
@@ -13,8 +10,6 @@ public class RenderDummy extends RenderBiped<EntityDummy> {
 
   private static final ResourceLocation texture = new ResourceLocation("testdummy", "textures/entity/dummy.png");
   public static final ModelDummy model = new ModelDummy(0.0f, 0.0F);
-
-  private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
   public RenderDummy(RenderManager renderManager) {
     super(renderManager, model, 0.125f);
