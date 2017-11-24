@@ -29,7 +29,7 @@ import java.util.Arrays;
 public class TestDummyMod {
 
   public static final String MODID = "testdummy";
-  public static final String VERSION = "1.11";
+  public static final String VERSION = "1.12";
   public static final Logger log = LogManager.getLogger(MODID);
 
   @Mod.Instance
