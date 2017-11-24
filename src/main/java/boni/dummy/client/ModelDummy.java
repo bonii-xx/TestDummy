@@ -120,8 +120,6 @@ public class ModelDummy extends ModelBiped {
 
     this.bipedRightArm.rotateAngleY = 0.0F;
     this.bipedLeftArm.rotateAngleY = 0.0F;
-    float f6;
-    float f7;
 
         /*
         if (this.onGround > -9990.0F)

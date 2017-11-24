@@ -15,11 +15,11 @@ public class DummyEventHandler {
     if(!event.getSource().damageType.equals("player")) {
       return;
     }
-    if(!(event.getSource().getEntity() instanceof EntityPlayer)) {
+    if(!(event.getSource().getTrueSource() instanceof EntityPlayer)) {
       return;
     }
 
-    EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
+    EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
     // shift-leftclick with empty hand dismantles
     if(player.isSneaking() && player.getHeldItemMainhand().isEmpty()) {
